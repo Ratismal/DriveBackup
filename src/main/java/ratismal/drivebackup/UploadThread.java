@@ -42,7 +42,7 @@ public class UploadThread implements Runnable {
     public void run() {
 
         try {
-            Thread.currentThread().setPriority(Thread.NORM_PRIORITY - 2);
+            Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 
             if (PlayerListener.doBackups || forced) {
                 MessageUtil.sendMessageToAllPlayers(Config.getBackupStart());
