@@ -4,9 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.mcstats.Metrics;
 import ratismal.drivebackup.config.Config;
 import ratismal.drivebackup.handler.CommandHandler;
@@ -189,14 +188,14 @@ public class DriveBackup extends JavaPlugin {
             conn.setDoOutput(true);
             final BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             final String response = reader.readLine();
-            final JSONArray array = (JSONArray) JSONValue.parse(response);
+            final JSONArray array = new JSONArray(response);
 
-            if (array.size() == 0) {
+            if (array.length() == 0) {
                 this.getLogger().warning("No files found, or Feed URL is bad.");
                 return currentVersion;
             }
             // Pull the last version from the JSON
-            newVersionTitle = ((String) ((JSONObject) array.get(array.size() - 1)).get("name")).replace("DriveBackup-", "").trim();
+            newVersionTitle = ((String) ((JSONObject) array.get(array.length() - 1)).get("name")).replace("DriveBackup-", "").trim();
             return Double.valueOf(newVersionTitle.replaceFirst("\\.", "").trim());
         } catch (Exception e) {
             MessageUtil.sendConsoleMessage("There was an issue attempting to check for the latest version.");
