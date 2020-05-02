@@ -1,8 +1,7 @@
 package ratismal.drivebackup.onedrive;
 
 import com.jayway.restassured.response.Response;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import org.json.JSONObject;
 import ratismal.drivebackup.DriveBackup;
 import ratismal.drivebackup.config.Config;
 import ratismal.drivebackup.util.MessageUtil;
@@ -102,8 +101,7 @@ public class OneDriveUploader {
     private void setExistingTokens() throws Exception {
         //Reading the OneDriveCredential.json and assigning variables if they exist for further processing.
         String clientJSON = processClientJsonFile();
-        JSONParser jsonParser = new JSONParser();
-        JSONObject clientJsonObject = (JSONObject) jsonParser.parse(clientJSON);
+        JSONObject clientJsonObject = new JSONObject(clientJSON);
         this.userCode = (String) clientJsonObject.get("code");
 
         String authKey = (String) clientJsonObject.get("auth_key");
@@ -132,8 +130,7 @@ public class OneDriveUploader {
 
             // Process the OneDriveCredential JSON file for future use
             String clientJSON = processClientJsonFile();
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(clientJSON);
+            JSONObject jsonObject = new JSONObject(clientJSON);
             jsonObject.remove("auth_key");
             jsonObject.remove("refresh_key");
             jsonObject.put("auth_key", returnAccessToken());
@@ -141,7 +138,7 @@ public class OneDriveUploader {
 
             // Write new keys to pre-existing file. Overwrites existing file
             FileWriter file = new FileWriter(CLIENT_JSON_PATH, false);
-            file.write(jsonObject.toJSONString());
+            file.write(jsonObject.toString());
             file.close();
         }
     }
